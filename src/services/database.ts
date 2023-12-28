@@ -1,8 +1,9 @@
-import logger from "./logger";
+import logger from "../utils/logger";
+import 'dotenv/config'
 
 const mongoose = require("mongoose");
 
-const connectDb = async () => {
+export default async () => {
   try {
     const database_url: string = process.env.MONGO_URL || "";
     await mongoose
@@ -17,4 +18,4 @@ const connectDb = async () => {
   }
 };
 
-export default connectDb;
+

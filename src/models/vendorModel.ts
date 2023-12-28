@@ -2,10 +2,12 @@ import mongoose, { Document, Model, Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Food } from "./foodModel";
+import 'dotenv/config';
 
 const emailRegexPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-export interface Vendor extends Document {
+export interface Vendor extends Document
+{
   name: string;
   ownerName: string;
   foodType: string;
@@ -15,10 +17,7 @@ export interface Vendor extends Document {
   email: string;
   password: string;
   serviceAvaliable: boolean;
-  coverImages: {
-    public_id: string;
-    url: string;
-  };
+  coverImages: [string];
   rating: number;
   foods: Food[];
   comparePassword: (password: string) => Promise<boolean>;
@@ -56,7 +55,8 @@ const vendorSchema: Schema<Vendor> = new mongoose.Schema(
       type: String,
       required: [true, "Please enter your email"],
       validate: {
-        validator: function (email: string) {
+        validator: function (email: string)
+        {
           return emailRegexPattern.test(email);
         },
         message: "Please enter the valid email",
@@ -68,14 +68,9 @@ const vendorSchema: Schema<Vendor> = new mongoose.Schema(
       minlength: [6, "Password must be at least 6 characters"],
       select: true,
     },
-    coverImages: {
-      public_id: {
-        type: String,
-      },
-      url: {
-        type: String,
-      },
-    },
+    coverImages: [{
+      type: String
+    }],
     rating: {
       type: Number,
     },
@@ -91,7 +86,8 @@ const vendorSchema: Schema<Vendor> = new mongoose.Schema(
   },
   {
     toJSON: {
-      transform(doc, ret) {
+      transform(doc, ret)
+      {
         delete ret.createdAt;
         delete ret.updatedAt;
         delete ret.__v;
@@ -102,14 +98,18 @@ const vendorSchema: Schema<Vendor> = new mongoose.Schema(
 );
 
 //hash password before saving
-vendorSchema.pre<Vendor>("save", async function (next) {
-  try {
-    if (!this.isModified("password")) {
+vendorSchema.pre<Vendor>("save", async function (next)
+{
+  try
+  {
+    if (!this.isModified("password"))
+    {
       next();
     }
     this.password = await bcrypt.hash(this.password, 10);
     next();
-  } catch (err: any) {
+  } catch (err: any)
+  {
     next(err);
   }
 });
@@ -117,12 +117,14 @@ vendorSchema.pre<Vendor>("save", async function (next) {
 //compare password
 vendorSchema.methods.comparePassword = async function (
   enteredPassword: string
-): Promise<boolean> {
+): Promise<boolean>
+{
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
 //generate access token
-vendorSchema.methods.generateAccessToken = function () {
+vendorSchema.methods.generateAccessToken = function ()
+{
   return jwt.sign(
     {
       id: this._id,
@@ -135,7 +137,8 @@ vendorSchema.methods.generateAccessToken = function () {
 };
 
 //generate refresh token
-vendorSchema.methods.generateRefreshToken = function () {
+vendorSchema.methods.generateRefreshToken = function ()
+{
   return jwt.sign(
     {
       id: this._id,

@@ -7,16 +7,19 @@ import sendToken from "../utils/jwtToken";
 import foodModel, { Food } from "../models/foodModel";
 
 export const vendorLogin = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) =>
+  {
     const { email, password } = req.body;
     const vendor = await vendorModel.findOne({ email });
-    if (!vendor) {
+    if (!vendor)
+    {
       return next(
         new ApiError("the vendor with this email does not exit", 500)
       );
     }
     const isPasswordMatched = await vendor.comparePassword(password);
-    if (!isPasswordMatched) {
+    if (!isPasswordMatched)
+    {
       return next(new ApiError("wrong password", 500));
     }
     sendToken(vendor, res);
@@ -24,9 +27,11 @@ export const vendorLogin = asyncHandler(
 );
 
 export const getVendorProfile = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) =>
+  {
     const user = req.user;
-    if (!user) {
+    if (!user)
+    {
       return next(new ApiError("Vendor information was not found", 404));
     }
     const existingVendor = await vendorModel.findById(user._id);
@@ -38,11 +43,13 @@ export const getVendorProfile = asyncHandler(
 );
 
 export const updateVendorProfile = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) =>
+  {
     const { name, ownerName, address, phone, foodType } = req.body;
 
     const user = req.user;
-    if (!user) {
+    if (!user)
+    {
       return next(new ApiError("Vendor information was not found", 404));
     }
 
@@ -72,15 +79,42 @@ export const updateVendorProfile = asyncHandler(
 );
 
 export const updateCoverImage = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {}
+  async (req: Request, res: Response, next: NextFunction) =>
+  {
+
+    const user = req.user;
+    const files = req.files as any;
+    
+    const images = files.map((file : any) => file.filename) 
+
+    if (!user)
+    {
+      return next(new ApiError("Vendor was not found", 404));
+    }
+
+    const vendor = await vendorModel.findById(user._id);
+    if (!vendor)
+    {
+      return next(new ApiError("Vendor was not found", 404));
+    }
+    vendor.coverImages.push(...images);
+
+    const result = await vendor.save();
+    res.status(201).json({
+      status: "success",
+      result
+    });
+  }
 );
 
 export const updateVendorService = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) =>
+  {
     const { serviceAvaliable } = req.body;
 
     const user = req.user;
-    if (!user) {
+    if (!user)
+    {
       return next(new ApiError("Vendor information was not found", 404));
     }
 
@@ -106,17 +140,23 @@ export const updateVendorService = asyncHandler(
 );
 
 export const addFoods = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) =>
+  {
     const { name, description, category, foodType, readyTime, price, rating } =
       req.body;
 
     const user = req.user;
-    if (!user) {
+    const files = req.files as any;
+    const images = files?.map((file: any) => file.filename);
+
+    if (!user)
+    {
       return next(new ApiError("Vendor was not found", 404));
     }
 
     const vendor = await vendorModel.findById(user._id);
-    if (vendor) {
+    if (vendor)
+    {
       const newFood = await foodModel.create({
         vendorId: user._id,
         name,
@@ -126,6 +166,7 @@ export const addFoods = asyncHandler(
         readyTime,
         price,
         rating,
+        images: images
       });
 
       vendor?.foods.push(newFood);
@@ -139,13 +180,16 @@ export const addFoods = asyncHandler(
 );
 
 export const getFoods = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) =>
+  {
     const user = req.user;
-    if (!user) {
+    if (!user)
+    {
       return next(new ApiError("Vendor was not found", 404));
     }
     const foods = await foodModel.find({ vendorId: user._id });
-    if (!foods) {
+    if (!foods)
+    {
       return next(new ApiError("this vendor have no foods", 404));
     }
     res.status(200).json(foods);
