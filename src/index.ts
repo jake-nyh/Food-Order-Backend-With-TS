@@ -4,13 +4,12 @@ import App from "./services/expressApp";
 import connectDb from "./services/database";
 import "dotenv/config";
 
-//create server
 const startServer = async () =>
 {
     try
     {
-        const app = express()
-        await App(app)
+        const app = express();
+        await App(app);
         const port = process.env.PORT || 3000;
         app.listen(port, async () =>
         {
@@ -23,7 +22,7 @@ const startServer = async () =>
         console.log(err);
     }
 
-}
+};
 
-startServer()
+startServer();
 

@@ -1,7 +1,7 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { Food } from "./foodModel";
+import foodModel, { Food } from "./foodModel";
 import 'dotenv/config';
 
 const emailRegexPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -80,7 +80,7 @@ const vendorSchema: Schema<Vendor> = new mongoose.Schema(
     foods: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "food",
+        ref: "Food",
       },
     ],
   },
