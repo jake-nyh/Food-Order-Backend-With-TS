@@ -1,5 +1,6 @@
 import { Response } from "express";
 import { Vendor } from "../models/vendorModel";
+import { Customer } from "../models/customerModel";
 
 interface TokenOptions {
   expires: Date;
@@ -9,7 +10,7 @@ interface TokenOptions {
   secure?: boolean;
 }
 
-const sendToken = (user: Vendor, res: Response) => {
+const sendToken = (user: Vendor| Customer, res: Response) => {
   const accessToken = user.generateAccessToken();
   const refreshToken = user.generateRefreshToken();
 

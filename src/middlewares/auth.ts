@@ -3,14 +3,16 @@ import asyncHandler from "../utils/catchAsync";
 import { Request, Response, NextFunction } from "express";
 import vendorModel, { Vendor } from "../models/vendorModel";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { Customer } from "models/customerModel";
 
 declare global {
   namespace Express {
     interface Request {
-      user?: Vendor;
+      user?: Vendor|Customer;
     }
   }
 }
+
 
 const isAuthorized = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {

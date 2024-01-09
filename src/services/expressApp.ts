@@ -7,6 +7,7 @@ import { adminRouter } from "../routes/adminRoute";
 import { vendorRouter } from "../routes/vendorRoute";
 import path from "path";
 import { shoopingRouter } from "../routes/shoppingRoute";
+import { customerRouter } from "../routes/customerRoute";
 
 export default async (app: Application) =>
 {
@@ -29,6 +30,7 @@ export default async (app: Application) =>
     app.use("/api/admin", adminRouter);
     app.use("/api/vendor", vendorRouter);
     app.use("/api/shopping", shoopingRouter)
+    app.use("/api/customer", customerRouter)
 
     //test route
     app.get("/", (req: Request, res: Response, next: NextFunction) =>

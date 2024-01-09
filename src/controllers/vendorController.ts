@@ -84,8 +84,9 @@ export const updateCoverImage = asyncHandler(
 
     const user = req.user;
     const files = req.files as any;
-    
-    const images = files.map((file : any) => file.filename) 
+    console.log(files)
+
+    const images = files.map((file: any) => file.filename);
 
     if (!user)
     {

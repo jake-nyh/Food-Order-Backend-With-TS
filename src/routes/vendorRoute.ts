@@ -9,7 +9,7 @@ import {
   updateVendorProfile,
 } from "../controllers/vendorController";
 import express, { Request, Response, NextFunction } from "express";
-import uploadImage from "../middlewares/multer";
+import { uploadImage } from "../middlewares/multer";
 
 const router = express.Router();
 
