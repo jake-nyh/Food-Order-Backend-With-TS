@@ -1,6 +1,7 @@
 import isAuthorized from '../middlewares/auth';
-import { customerLogin, customerRegister, getCustomerProfile, requestOTP, updateCustomerProfile } from '../controllers/customerController';
+import { customerLogin, customerRegister, getCustomerProfile, requestOTP, updateCustomerProfile, uploadPDF } from '../controllers/customerController';
 import express, { Request, Response } from 'express'
+import { upload, uploadImage } from '../middlewares/multer';
 
 const router = express.Router()
 
@@ -17,6 +18,8 @@ router.get("/profile", getCustomerProfile)
 router.patch("/profile", updateCustomerProfile)
 
 router.get("/otp",isAuthorized, requestOTP)
+
+router.post("/pdf-upload", upload.single('pdf'), uploadPDF)
 
 
 
