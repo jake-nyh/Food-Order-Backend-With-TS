@@ -3,7 +3,7 @@ import ApiError from "../utils/apiError";
 import { Request, Response, NextFunction } from "express";
 import customerModel from "../models/customerModel";
 import asyncHandler from "../utils/catchAsync";
-import { generateOTP } from "../utils/otp";
+import { generateOTP, sendOTPEmail } from "../utils/otp";
 
 export const customerRegister = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) =>
@@ -31,7 +31,9 @@ export const customerRegister = asyncHandler(
 
     const result = await newCustomer.save();
 
-    res.json(201).json({
+    await sendOTPEmail(email,otpCode)
+
+    res.status(201).json({
       success: true,
       result
     });
@@ -59,8 +61,12 @@ export const customerLogin = asyncHandler(async (req: Request, res: Response, ne
 
 export const requestOTP = async (req: Request, res: Response) =>
 {
-  const user = req.user
-  console.log(user)
+  const user = req.user;
+  const {otp} = req.body;
+
+
+
+  
 };
 
 export const getCustomerProfile = async (req: Request, res: Response) =>

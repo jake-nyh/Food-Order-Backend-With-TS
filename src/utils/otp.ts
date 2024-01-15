@@ -1,3 +1,6 @@
+import nodeMailer from 'nodemailer';
+import 'dotenv/config';
+
 type OTP = {
     code: number;
     expiry: number;
@@ -15,4 +18,23 @@ export const generateOTP = (digitCount: number = DIGIT, duration: number = EXPIR
 
 export const isExpired = (otp: OTP) => otp.expiry < new Date().getTime();
 
-// export const onRequestOTP = (otp: OTP)=>
+export const sendOTPEmail = async (email: string, otp: number) =>
+{
+    const transporter = nodeMailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.SENDER_MAIL,
+            pass: process.env.SENDER_PASS
+        }
+    });
+
+    const mailOptions = {
+        from: process.env.SENDER_MAIL,
+        to: email,
+        subject: 'Your OTP Code',
+        text: `Your OTP code is: ${otp}`
+    };
+
+    await transporter.sendMail(mailOptions);
+};
+
