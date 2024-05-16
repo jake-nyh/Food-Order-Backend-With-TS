@@ -1,0 +1,23 @@
+@local = http://localhost:3000/api/v1/admin
+
+###
+POST {{local}}/vendor
+Content-Type: application/json
+
+{
+    "name": "Lotteria",
+    "ownerName": "Daw Nann Shwe Li",
+    "foodType": "non-veg",
+    "pincode": "111111",
+    "address": "nyaungbintha",
+    "phone": "09787869202",
+    "email":"nannshweli@gmail.com",
+    "password": "123456",
+    "serviceAvaliable": "true"
+}
+
+###
+GET {{local}}/vendor
+
+###
+GET {{local}}/vendor/660532a7b3b42b7ce208ac24
