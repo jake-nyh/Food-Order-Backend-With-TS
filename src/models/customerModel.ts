@@ -9,10 +9,10 @@ export interface Customer extends Document {
   email: string;
   password: string;
   address: string;
-  phone: number;
+  phone: string;
   isVerified: boolean;
   otpCode: number;
-  otp_expiry: Number;
+  otp_expiry: number;
   lat: number;
   lng: number;
   comparePassword: (password: string) => Promise<boolean>;
@@ -46,7 +46,7 @@ const customerSchema = new mongoose.Schema<Customer>(
      type: String
     },
     phone: {
-      type: Number,
+      type: String,
       required: true
     },
     isVerified: {
@@ -58,7 +58,7 @@ const customerSchema = new mongoose.Schema<Customer>(
       required: true
     },
     otp_expiry: {
-      type: Date,
+      type: Number,
       required: true
     },
     lat: {

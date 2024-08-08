@@ -1,0 +1,41 @@
+@local = http://localhost:3000/api/v1/customer
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NTgwMDI3OGMyYTY1NDM4ZGMwNjVhMiIsImlhdCI6MTcxNzM5MjAyMiwiZXhwIjoxNzE3NDc4NDIyfQ.tSJzz0wuIHAbYWHlDGiglsPq66KeMYhxqfAkeY0Uso4
+
+###
+POST {{local}}/register
+Content-Type: application/json
+
+{
+	"username" : "nyan ye htet",
+	"password" : "123456",
+	"email" : "nyanyairh@gmail.com",
+	"address" : "yangon",
+	"phone" : "09883084308"
+}
+
+###
+POST {{local}}/login
+Content-Type: application/json
+
+{
+	"email" : "nyanyairh@gmail.com",
+	"password" : "123456"
+}
+
+###
+PATCH {{local}}/verify
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+	"otp" : "270174"
+}
+
+###
+GET {{local}}/otp
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+GET {{local}}/vendor/660532a7b3b42b7ce208ac24

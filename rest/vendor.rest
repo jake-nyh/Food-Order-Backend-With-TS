@@ -5,13 +5,13 @@ POST {{local}}/vendor
 Content-Type: application/json
 
 {
-    "name": "Lotteria",
-    "ownerName": "Daw Nann Shwe Li",
+    "name": "Yakun",
+    "ownerName": "Ko Nyan Ye Htet",
     "foodType": "non-veg",
-    "pincode": "111111",
+    "pincode": "222222",
     "address": "nyaungbintha",
-    "phone": "09787869202",
-    "email":"nannshweli@gmail.com",
+    "phone": "09883084308",
+    "email":"nyanyairh@gmail.com",
     "password": "123456",
     "serviceAvaliable": "true"
 }

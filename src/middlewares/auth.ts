@@ -3,7 +3,7 @@ import asyncHandler from "../utils/catchAsync";
 import { Request, Response, NextFunction } from "express";
 import vendorModel, { Vendor } from "../models/vendorModel";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { Customer } from "models/customerModel";
+import customerModel, { Customer } from "../models/customerModel";
 
 declare global {
   namespace Express {
@@ -11,12 +11,15 @@ declare global {
       user?: Vendor|Customer;
     }
   }
-} 
+}
 
 
 const isAuthorized = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { accessToken } = req.cookies;
+    const authHeader =req.headers["authorization"];
+    const split = authHeader && authHeader.split(" ")
+    const accessToken =  split && split[1]
+
     if (!accessToken) {
       return next(new ApiError("please login to get this resource", 400));
     }
@@ -29,13 +32,34 @@ const isAuthorized = asyncHandler(
       return next(new ApiError("the access token is not valid", 400));
     }
 
-    const user = await vendorModel.findById(decoded.id);
-    if (!user) {
-      return next(new ApiError("user is not found", 404));
+    // let user = await vendorModel.findById(decoded.id);
+    // if (user) {
+    //   req.user = user; 
+    // }else{
+    //   user = await customerModel.findById(decoded.id)
+    //   if(user){
+    //     req.user = user;         
+    //   }else{
+    //     return next(new ApiError("user is not found", 404));
+    //   }
+    // }
+    // next()
+
+    const [customer , vendor] = await Promise.all([
+      vendorModel.findById(decoded.id),
+      customerModel.findById(decoded.id)
+    ])
+   
+    const user = customer || vendor
+
+    if (!user){
+      return next(new ApiError("user not found",404))
     }
+
     req.user = user;
-    next();
+    next()
   }
 );
 
 export default isAuthorized;
+
