@@ -27,10 +27,10 @@ export default async (app: Application) =>
     app.use("/images", express.static(path.join(__dirname, "images")));
 
     //routes
-    app.use("/api/admin", adminRouter);
-    app.use("/api/vendor", vendorRouter);
-    app.use("/api/shopping", shoopingRouter)
-    app.use("/api/customer", customerRouter)
+    app.use("/api/v1/admin", adminRouter);
+    app.use("/api/v1/vendor", vendorRouter);
+    app.use("/api/v1/shopping", shoopingRouter)
+    app.use("/api/v1/customer", customerRouter)
 
     //test route
     app.get("/", (req: Request, res: Response, next: NextFunction) =>

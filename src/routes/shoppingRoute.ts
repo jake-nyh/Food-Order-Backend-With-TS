@@ -13,5 +13,4 @@ router.get("/search/:pincode", SearchFoods)
 
 router.get("/resturant/:id", getResturantByID)
 
-
 export {router as shoopingRouter}

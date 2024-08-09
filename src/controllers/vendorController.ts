@@ -6,10 +6,15 @@ import logger from "../utils/logger";
 import sendToken from "../utils/jwtToken";
 import foodModel, { Food } from "../models/foodModel";
 
+interface IVendorLoginInput{
+  email : string;
+  password: string;
+}
+
 export const vendorLogin = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) =>
   {
-    const { email, password } = req.body;
+    const { email, password } = <IVendorLoginInput>req.body;
     const vendor = await vendorModel.findOne({ email });
     if (!vendor)
     {

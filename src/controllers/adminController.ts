@@ -4,6 +4,20 @@ import asyncHandler from "../utils/catchAsync";
 import { Request, Response, NextFunction } from "express";
 import ApiError from "../utils/apiError";
 
+interface ICreateVendorInput{
+  name: string;
+  ownerName: string;
+  foodType: string;
+  pincode: string;
+  address: string;
+  phone: string;
+  email: string;
+  password: string;
+  serviceAvaliable: boolean;
+  coverImages: [];
+  rating: string
+}
+
 export const createVendor = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const {
@@ -18,11 +32,11 @@ export const createVendor = asyncHandler(
       serviceAvaliable,
       coverImages,
       rating,
-    } = req.body;
+    } = <ICreateVendorInput>req.body;
 
     const existingVendor = await vendorModel.findOne({ email });
     if (existingVendor) {
-      return next(new ApiError("this vendor exists", 500));
+      return next(new ApiError("the vendor with this email exists", 500));
     }
 
     const newVendor = await vendorModel.create({

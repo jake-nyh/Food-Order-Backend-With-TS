@@ -1,5 +1,6 @@
 import nodeMailer from 'nodemailer';
 import 'dotenv/config';
+import twilio from 'twilio';
 
 type OTP = {
     code: number;
@@ -12,11 +13,13 @@ const DIGIT = 6;
 export const generateOTP = (digitCount: number = DIGIT, duration: number = EXPIRY_DURATION) =>
 {
     const otpCode = Math.floor(Math.random() * 10 ** digitCount);
-    const expiry = new Date().getTime() + duration;
-    return { otpCode, expiry };
+    const otp_expiry = new Date().getTime() + duration;
+    return { otpCode, otp_expiry };
 };
 
-export const isExpired = (otp: OTP) => otp.expiry < new Date().getTime();
+export const validateOTP = (otp: string, customerOtp: any, customerOtpExpiry: number)=>{
+    return parseInt(otp) === customerOtp && customerOtpExpiry >= new Date().getTime()
+}
 
 export const sendOTPEmail = async (email: string, otp: number) =>
 {
@@ -37,4 +40,23 @@ export const sendOTPEmail = async (email: string, otp: number) =>
 
     await transporter.sendMail(mailOptions);
 };
+
+export const sendOTPwithSMS = (otp:number, phoneNumber:string)=>{
+    const accountSID = process.env.TWILLIO_ACC_SID;
+    const authToken = process.env.TWILLIO_AUTH_TOKEN;
+    const client = twilio(accountSID, authToken);
+
+    const response = client.messages.create({
+        body: `Your OTP code is ${otp}`,
+        to: phoneNumber,
+        from: '+17063974621'
+    })
+
+    console.log(response)
+    
+    return response;
+}
+
+
+
 

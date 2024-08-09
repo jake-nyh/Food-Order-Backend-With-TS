@@ -13,10 +13,6 @@ import { uploadImage } from "../middlewares/multer";
 
 const router = express.Router();
 
-router.get("/test", (req: Request, res: Response, next: NextFunction) => {
-  res.status(200).json({ massage: "lee pal ya mal from vendor" });
-});
-
 router.post("/", vendorLogin);
 router.get("/profile", isAuthorized, getVendorProfile);
 router.patch("/profile", isAuthorized, updateVendorProfile)

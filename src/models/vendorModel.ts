@@ -13,12 +13,12 @@ export interface Vendor extends Document
   foodType: string;
   pincode: string;
   address: string;
-  phone: number;
+  phone: string;
   email: string;
   password: string;
   serviceAvaliable: boolean;
   coverImages: [string];
-  rating: number;
+  rating: string;
   foods: Food[];
   comparePassword: (password: string) => Promise<boolean>;
   generateAccessToken: () => string;
@@ -30,6 +30,7 @@ const vendorSchema: Schema<Vendor> = new mongoose.Schema(
     name: {
       type: String,
       required: [true, "Please enter the name"],
+      unique: true
     },
     ownerName: {
       type: String,
@@ -48,7 +49,7 @@ const vendorSchema: Schema<Vendor> = new mongoose.Schema(
       type: String,
     },
     phone: {
-      type: Number,
+      type: String,
       required: [true, "Please enter the phone number"],
     },
     email: {
@@ -72,7 +73,8 @@ const vendorSchema: Schema<Vendor> = new mongoose.Schema(
       type: String
     }],
     rating: {
-      type: Number,
+      type: String,
+      default: "0"
     },
     serviceAvaliable: {
       type: Boolean,

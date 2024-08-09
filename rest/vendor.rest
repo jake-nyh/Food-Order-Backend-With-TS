@@ -1,0 +1,23 @@
+@local = http://localhost:3000/api/v1/admin
+
+###
+POST {{local}}/vendor
+Content-Type: application/json
+
+{
+    "name": "Yakun",
+    "ownerName": "Ko Nyan Ye Htet",
+    "foodType": "non-veg",
+    "pincode": "222222",
+    "address": "nyaungbintha",
+    "phone": "09883084308",
+    "email":"nyanyairh@gmail.com",
+    "password": "123456",
+    "serviceAvaliable": "true"
+}
+
+###
+GET {{local}}/vendor
+
+###
+GET {{local}}/vendor/660532a7b3b42b7ce208ac24
