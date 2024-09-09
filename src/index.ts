@@ -3,6 +3,7 @@ import express from "express";
 import App from "./services/expressApp";
 import connectDb from "./services/database";
 import "dotenv/config";
+import configureCronJob from "./services/cron";
 
 const startServer = async () =>
 {
@@ -15,6 +16,7 @@ const startServer = async () =>
         {
             logger.info(`The server is running on ${port}`);
             await connectDb();
+            await configureCronJob()
         });
 
     } catch (err)

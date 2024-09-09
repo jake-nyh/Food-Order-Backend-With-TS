@@ -2,6 +2,8 @@ import { Request, NextFunction, Response } from "express";
 import asyncHandler from "../utils/catchAsync";
 import ApiError from "../utils/apiError";
 import customerModel from "models/customerModel";
+import { generateOrderId } from "utils/order";
+import orderModel from "models/orderModel";
 
 export const createOrder = asyncHandler(async(req: Request , res: Response, next: NextFunction)=>{
     const user = req.user;
@@ -25,6 +27,15 @@ export const createOrder = asyncHandler(async(req: Request , res: Response, next
 })
 
 export const getAllOrders = asyncHandler(async(req: Request, res: Response, next: NextFunction)=>{
+    // const user = req.user;
+
+    const query = req.query
+
+    const orders = await orderModel.find(query)
+
+    
+
+    
     
 })
 
